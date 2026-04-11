@@ -5,10 +5,13 @@
 [ext_resource type="Texture2D" uid="uid://c6nj8kxugrdg5" path="res://Assets/Sprout Sorry pack/Early Access/Dungeon Pack/tiles/Rocks.png" id="2_h2yge"]
 [ext_resource type="Script" uid="uid://btu5cohdjgndb" path="res://Player/player.gd" id="3_1bvp3"]
 [ext_resource type="Texture2D" uid="uid://c1cqlbrton34b" path="res://Assets/Player/Basic Charakter Spritesheet.png" id="4_7mycd"]
-[ext_resource type="Script" uid="uid://jyid0p88ixbd" path="res://Player/movement_controller.gd" id="5_5vw27"]
+[ext_resource type="Script" uid="uid://jyid0p88ixbd" path="res://Player/input_handler.gd" id="5_5vw27"]
 [ext_resource type="Texture2D" uid="uid://d30o1kjkvyegh" path="res://Assets/Sprout Lands - Sprites - Basic pack/Characters/Basic Charakter Actions.png" id="5_7mycd"]
-[ext_resource type="Script" uid="uid://bfukk4sapg6qm" path="res://Player/camera_controller.gd" id="5_lquwl"]
-[ext_resource type="Script" uid="uid://df2rd4liewtma" path="res://Player/animation_controller.gd" id="9_kek77"]
+[ext_resource type="PackedScene" uid="uid://df52wo7j24qsm" path="res://Player/state_machine.tscn" id="5_efxa6"]
+[ext_resource type="Script" uid="uid://bfukk4sapg6qm" path="res://Player/Controllers/camera_controller.gd" id="5_lquwl"]
+[ext_resource type="Script" uid="uid://d1cuee0h2qcuu" path="res://Player/States/idle.gd" id="6_efxa6"]
+[ext_resource type="Script" uid="uid://df2rd4liewtma" path="res://Player/Controllers/animation_controller.gd" id="9_kek77"]
+[ext_resource type="Script" uid="uid://dqa1igwdkiov7" path="res://Player/States/move.gd" id="10_dg77c"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0xm2m"]
 texture = ExtResource("1_ig7tw")
@@ -435,6 +438,10 @@ texture = ExtResource("2_h2yge")
 physics_layer_0/collision_layer = 4
 sources/0 = SubResource("TileSetAtlasSource_1bvp3")
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7mycd"]
+radius = 2.0
+height = 8.0
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_7mycd"]
 atlas = ExtResource("4_7mycd")
 region = Rect2(0, 0, 48, 48)
@@ -798,10 +805,6 @@ _data = {
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_efxa6"]
 graph_offset = Vector2(47, -57)
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7mycd"]
-radius = 2.0
-height = 8.0
-
 [node name="Main" type="Node" unique_id=104056356]
 script = ExtResource("1_272bh")
 
@@ -827,15 +830,11 @@ collision_mask = 6
 motion_mode = 1
 script = ExtResource("3_1bvp3")
 
-[node name="StateMachine" type="Node2D" parent="World/Player" unique_id=520507262]
+[node name="CollisionBox" type="CollisionShape2D" parent="World/Player" unique_id=1545312299]
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_7mycd")
 
-[node name="MovementController" type="Node2D" parent="World/Player/StateMachine" unique_id=937749185 node_paths=PackedStringArray("player")]
-script = ExtResource("5_5vw27")
-player = NodePath("../..")
-
-[node name="ActionController" type="Node2D" parent="World/Player/StateMachine" unique_id=1268774587]
-
-[node name="AnimationController" type="AnimatedSprite2D" parent="World/Player" unique_id=237034435]
+[node name="Animations" type="AnimatedSprite2D" parent="World/Player" unique_id=237034435]
 y_sort_enabled = true
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_getpj")
@@ -843,18 +842,29 @@ animation = &"walk_down"
 offset = Vector2(0.26489258, -7.6289673)
 script = ExtResource("9_kek77")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="World/Player/AnimationController" unique_id=1786386026]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="World/Player/Animations" unique_id=1786386026]
 libraries/ = SubResource("AnimationLibrary_4c57u")
 libraries/Player = SubResource("AnimationLibrary_dg77c")
 
-[node name="AnimationTree" type="AnimationTree" parent="World/Player/AnimationController" unique_id=828471753]
+[node name="AnimationTree" type="AnimationTree" parent="World/Player/Animations" unique_id=828471753]
 tree_root = SubResource("AnimationNodeStateMachine_efxa6")
 anim_player = NodePath("../AnimationPlayer")
 
-[node name="CollisionBox" type="CollisionShape2D" parent="World/Player" unique_id=1545312299]
-rotation = 1.5707964
-shape = SubResource("CapsuleShape2D_7mycd")
+[node name="InputHandler" type="Node" parent="World/Player" unique_id=2005389259]
+script = ExtResource("5_5vw27")
+
+[node name="StateMachine" parent="World/Player" unique_id=1326391830 instance=ExtResource("5_efxa6")]
+
+[node name="Idle" type="Node" parent="World/Player/StateMachine" unique_id=226131922]
+script = ExtResource("6_efxa6")
+
+[node name="Move" type="Node" parent="World/Player/StateMachine" unique_id=351556071]
+script = ExtResource("10_dg77c")
+
+[node name="Action" type="Node" parent="World/Player/StateMachine" unique_id=692360730]
 
 [node name="Camera" type="Camera2D" parent="World/Player" unique_id=849771899]
 zoom = Vector2(5, 5)
 script = ExtResource("5_lquwl")
+
+[node name="ActionController" type="Node2D" parent="World/Player" unique_id=1268774587]

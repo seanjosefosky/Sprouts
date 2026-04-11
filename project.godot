@@ -15,15 +15,18 @@ run/main_scene="uid://bavtsa80qt5ht"
 config/features=PackedStringArray("4.6", "Forward Plus")
 run/max_fps=30
 boot_splash/show_image=false
-config/icon="res://icon.svg"
 
 [autoload]
 
-Debug="*uid://ck7hc2s5kw7qq"
+Debug="uid://ck7hc2s5kw7qq"
 
 [debug]
 
 gdscript/warnings/unused_parameter=0
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/script-ide/plugin.cfg")
 
 [input]
 
