@@ -18,15 +18,12 @@ boot_splash/show_image=false
 
 [autoload]
 
-Debug="uid://ck7hc2s5kw7qq"
+Debug="*uid://ck7hc2s5kw7qq"
+PlayerStates="*uid://dj0ru2wa5yb5w"
 
 [debug]
 
 gdscript/warnings/unused_parameter=0
-
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/script-ide/plugin.cfg")
 
 [input]
 

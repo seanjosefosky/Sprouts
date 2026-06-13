@@ -1,0 +1,63 @@
+[gd_scene format=3 uid="uid://c25pon85u5v1l"]
+
+[ext_resource type="Texture2D" uid="uid://c6nj8kxugrdg5" path="res://Assets/Sprout Sorry pack/Early Access/Dungeon Pack/tiles/Rocks.png" id="1_samr7"]
+[ext_resource type="Script" uid="uid://dhdrxu4q0b0bd" path="res://Interactables/InteractableBase.gd" id="1_wfjmj"]
+[ext_resource type="Texture2D" uid="uid://bwu7kwknwot2v" path="res://Assets/Sprout Sorry pack/Early Access/Dungeon Pack/tiles/Rocks_Outline.png" id="3_kwgns"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1bvp3"]
+radius = 2.0
+height = 13.999939
+
+[node name="InteractableBase" type="StaticBody2D" unique_id=372694791]
+collision_layer = 4
+input_pickable = true
+script = ExtResource("1_wfjmj")
+
+[node name="Texture" type="Sprite2D" parent="." unique_id=1458953154]
+modulate = Color(0.69099766, 0.69099766, 0.69099766, 1)
+texture_filter = 1
+position = Vector2(0, 3)
+texture = ExtResource("1_samr7")
+offset = Vector2(0, -7)
+region_enabled = true
+region_rect = Rect2(0, 16, 16, 16)
+
+[node name="TextureHoverOutline" type="Sprite2D" parent="." unique_id=1709736500]
+visible = false
+texture_filter = 1
+position = Vector2(0, -4)
+texture = ExtResource("3_kwgns")
+region_enabled = true
+region_rect = Rect2(0, 16, 16, 16)
+
+[node name="PhysicsCollider" type="CollisionShape2D" parent="." unique_id=800003730]
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_1bvp3")
+
+[node name="MouseArea" type="Area2D" parent="." unique_id=2023867872]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="MouseArea" unique_id=538815899]
+position = Vector2(-3, 2)
+polygon = PackedVector2Array(0, -1, -2, -1, -2, -2, -3, -2, -3, -3, -4, -3, -4, -7, -3, -7, -3, -8, -2, -8, -2, -9, 0, -9, 0, -10, 1, -10, 1, -11, 4, -11, 4, -10, 6, -10, 6, -9, 8, -9, 8, -8, 9, -8, 9, -7, 10, -7, 10, -2, 9, -2, 9, -1, 7, -1, 7, 0, 0, 0)
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=291099785]
+emitting = false
+amount = 4
+lifetime = 0.5
+one_shot = true
+speed_scale = 15.57
+explosiveness = 0.5
+randomness = 0.25
+draw_order = 1
+emission_shape = 2
+emission_sphere_radius = 1.93
+direction = Vector2(-1, 0)
+spread = 180.0
+gravity = Vector2(0, -200)
+radial_accel_min = 100.0
+radial_accel_max = 100.0
+damping_min = 29.167
+damping_max = 29.167
+
+[connection signal="mouse_entered" from="MouseArea" to="." method="_on_mouse_area_mouse_entered"]
+[connection signal="mouse_exited" from="MouseArea" to="." method="_on_mouse_area_mouse_exited"]
